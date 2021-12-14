@@ -1,5 +1,6 @@
 import { Box, Text, Button, Stack } from '@chakra-ui/react'
 import { BiPaintRoll, BiUser, BiDirections, BiHomeAlt } from 'react-icons/bi'
+import { Link } from 'react-router-dom'
 
 export const Navigation = () => {
   return (
@@ -23,18 +24,26 @@ export const Navigation = () => {
         </Text>
       </Box>
       <Stack justify="center" flex="1">
-        <Button w="100%" leftIcon={<BiHomeAlt />} colorScheme="blue" variant="ghost">
-          Home
-        </Button>
-        <Button w="100%" leftIcon={<BiPaintRoll />} colorScheme="blue" variant="ghost">
-          Items
-        </Button>
-        <Button w="100%" leftIcon={<BiUser />} colorScheme="blue" variant="ghost">
-          Clients
-        </Button>
-        <Button w="100%" leftIcon={<BiDirections />} colorScheme="blue" variant="ghost">
-          Transactions
-        </Button>
+        <Link to="/">
+          <Button w="100%" leftIcon={<BiHomeAlt />} colorScheme="blue" variant="ghost">
+            Home
+          </Button>
+        </Link>
+        <Link to="/items">
+          <Button w="100%" leftIcon={<BiPaintRoll />} colorScheme="blue" variant="ghost">
+            Items
+          </Button>
+        </Link>
+        <Link to="/clients">
+          <Button w="100%" leftIcon={<BiUser />} colorScheme="blue" variant="ghost">
+            Clients
+          </Button>
+        </Link>
+        <Link to="/transactions">
+          <Button w="100%" leftIcon={<BiDirections />} colorScheme="blue" variant="ghost">
+            Transactions
+          </Button>
+        </Link>
       </Stack>
     </Box>
   )
