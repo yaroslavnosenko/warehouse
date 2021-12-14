@@ -11,13 +11,14 @@ export const Navigation = () => {
       left="0"
       top="0"
       p="8"
+      py="14"
       d="flex"
       flexDir="column"
       borderRight="1px"
       borderRightColor="gray.200"
     >
       <Box textAlign="center">
-        <Text h="8" fontWeight="900" fontSize="20px">
+        <Text h="8" fontWeight="900" fontSize="20px" lineHeight="32px">
           Warehouse
         </Text>
       </Box>
