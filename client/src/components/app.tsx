@@ -1,8 +1,12 @@
-import { ChakraProvider, theme } from '@chakra-ui/react'
+import { ChakraProvider, theme, Box } from '@chakra-ui/react'
 import { HomePage } from '../pages'
+import { Navigation } from '.'
 
 export const App = () => (
   <ChakraProvider theme={theme}>
-    <HomePage />
+    <Box ml="72">
+      <Navigation />
+      <HomePage />
+    </Box>
   </ChakraProvider>
 )
