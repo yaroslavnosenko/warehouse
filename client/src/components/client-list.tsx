@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Box, Grid, HStack, IconButton, Skeleton, Text, Alert, AlertIcon } from '@chakra-ui/react'
 import { BiTrash, BiDotsVerticalRounded, BiInfoCircle } from 'react-icons/bi'
 
-import { getAllClients, updateClient } from '../services'
+import { deleteClient, getAllClients, updateClient } from '../services'
 import { Client } from '../types'
 import { EditClientForm } from '.'
 
@@ -29,17 +29,18 @@ const Empty = () => {
 interface ItemProps {
   client: Client
   onClickEdit: (client: Client) => void
+  onClickDelete: (clientId: number) => void
 }
 
 const ClientItem = (props: ItemProps) => {
-  const { onClickEdit, client } = props
+  const { onClickEdit, client, onClickDelete } = props
   return (
     <Box p="4" py="2" border="1px" borderColor="gray.300" borderRadius="md">
       <HStack spacing="0">
         <Text fontWeight="500" mr="4" flex="1">
           {client.full_name}
         </Text>
-        <IconButton variant="ghost" aria-label="" icon={<BiTrash />} />
+        <IconButton variant="ghost" aria-label="" icon={<BiTrash />} onClick={() => onClickDelete(client.id)} />
         <IconButton
           onClick={() => onClickEdit(client)}
           variant="ghost"
@@ -70,6 +71,11 @@ export const ClientList = () => {
     updateList()
   }
 
+  const onClientDelete = async (clientId: number) => {
+    await deleteClient(clientId)
+    updateList()
+  }
+
   return (
     <>
       {clients && clients.length === 0 && <Empty />}
@@ -78,7 +84,12 @@ export const ClientList = () => {
         {clients &&
           clients.length !== 0 &&
           clients.map((client) => (
-            <ClientItem onClickEdit={(client) => setEdit(client)} key={client.id} client={client} />
+            <ClientItem
+              onClickEdit={(client) => setEdit(client)}
+              key={client.id}
+              client={client}
+              onClickDelete={onClientDelete}
+            />
           ))}
       </Grid>
       <EditClientForm client={edit} onClose={() => setEdit(undefined)} onSave={onClientSave} />

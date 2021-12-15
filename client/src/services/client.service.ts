@@ -18,3 +18,9 @@ export const updateClient = async (client: Client): Promise<void> => {
   const clientIdx: number = clients.findIndex((item) => item.id === client.id)
   clients[clientIdx] = client
 }
+
+export const deleteClient = async (clientId: number): Promise<void> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  const clientIdx: number = clients.findIndex((item) => item.id === clientId)
+  clients.splice(clientIdx, 1)
+}
