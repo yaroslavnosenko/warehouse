@@ -26,9 +26,11 @@ const _empty: Client = { id: 0, full_name: '' }
 export const EditClientForm = (props: Props) => {
   const { client, onClose, onSave } = props
   const [form, setForm] = useState<Client>(_empty)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     setForm(props.client || _empty)
+    setLoading(false)
   }, [props])
 
   return (
@@ -49,7 +51,15 @@ export const EditClientForm = (props: Props) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={() => onSave(form)}>
+          <Button
+            isLoading={loading}
+            colorScheme="blue"
+            mr={3}
+            onClick={() => {
+              setLoading(true)
+              onSave(form)
+            }}
+          >
             Save
           </Button>
           <Button onClick={onClose}>Cancel</Button>
