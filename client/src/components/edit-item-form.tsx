@@ -41,9 +41,9 @@ export const EditItemForm = (props: Props) => {
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Full name</FormLabel>
+            <FormLabel>Title</FormLabel>
             <Input
-              placeholder="Full name"
+              placeholder="Title"
               value={form.title}
               onChange={(event) => setForm({ ...form, title: event.target.value })}
             />
