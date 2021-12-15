@@ -6,11 +6,11 @@ export const getAllClients = async (): Promise<Client[]> => {
   return clients
 }
 
-export const createClient = async (client: Client): Promise<Client> => {
+export const createClient = async (client: Client): Promise<void> => {
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  client.id = 99
+  const ids: number[] = clients.map((client) => client.id)
+  client.id = Math.max(...ids) + 1
   clients.push(client)
-  return client
 }
 
 export const updateClient = async (client: Client): Promise<void> => {
