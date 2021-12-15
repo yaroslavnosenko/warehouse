@@ -1,38 +1,9 @@
-import { Box, Grid, Heading, HStack, IconButton, Skeleton, Text, Alert, AlertIcon } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-
+import { Box, Grid, HStack, IconButton, Skeleton, Text, Alert, AlertIcon } from '@chakra-ui/react'
 import { BiTrash, BiDotsVerticalRounded, BiInfoCircle } from 'react-icons/bi'
 
-const mockClients = [
-  {
-    id: 1,
-    full_name: 'John Doe',
-  },
-  {
-    id: 2,
-    full_name: 'John Doe',
-  },
-  {
-    id: 3,
-    full_name: 'John Doe',
-  },
-  {
-    id: 4,
-    full_name: 'John Doe',
-  },
-  {
-    id: 5,
-    full_name: 'John Doe',
-  },
-  {
-    id: 6,
-    full_name: 'John Doe',
-  },
-  {
-    id: 7,
-    full_name: 'John Doe',
-  },
-]
+import { getAllClients } from '../services'
+import { Client } from '../types'
 
 const Loading = () => {
   return (
@@ -55,12 +26,11 @@ const Empty = () => {
 }
 
 interface ItemProps {
-  id: number
-  full_name: string
+  client: Client
 }
 
 const ClientItem = (props: ItemProps) => {
-  const { id, full_name } = props
+  const { full_name } = props.client
   return (
     <Box p="4" py="2" border="1px" borderColor="gray.300" borderRadius="md">
       <HStack spacing="0">
@@ -75,12 +45,10 @@ const ClientItem = (props: ItemProps) => {
 }
 
 export const ClientList = () => {
-  const [clients, setClients] = useState<any[] | undefined>()
+  const [clients, setClients] = useState<Client[] | undefined>()
 
   useEffect(() => {
-    setTimeout(() => {
-      setClients([])
-    }, 1000)
+    getAllClients().then((res) => setClients(res))
   }, [])
 
   return (
@@ -88,9 +56,7 @@ export const ClientList = () => {
       {clients && clients.length === 0 && <Empty />}
       <Grid templateColumns="repeat(4, 1fr)" gap="6">
         {!clients && <Loading />}
-        {clients &&
-          clients.length !== 0 &&
-          clients.map((client) => <ClientItem key={client.id} id={client.id} full_name={client.full_name} />)}
+        {clients && clients.length !== 0 && clients.map((client) => <ClientItem key={client.id} client={client} />)}
       </Grid>
     </>
   )
