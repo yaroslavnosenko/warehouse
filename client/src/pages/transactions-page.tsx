@@ -6,7 +6,7 @@ import { Container, TransactionList, EditTransactionForm } from '../components'
 import { createTransaction } from '../services'
 import { Transaction } from '../types'
 
-const _empty: Transaction = { id: 0, timestamp: 0, items: [] }
+const _empty: Transaction = { id: 0, timestamp: 0, items: [], client: undefined }
 
 export const TransactionsPage = () => {
   const [create, setCreate] = useState<Transaction | undefined>()
