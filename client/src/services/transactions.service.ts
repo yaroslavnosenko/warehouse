@@ -1,9 +1,9 @@
 import { Transaction } from '../types'
-// import { items } from '../mock'
+import { transactions } from '../mock'
 
 export const getAllTransactions = async (): Promise<Transaction[]> => {
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  return []
+  return transactions
 }
 
 export const createTransaction = async (transaction: Transaction): Promise<void> => {

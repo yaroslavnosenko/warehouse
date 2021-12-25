@@ -2,24 +2,21 @@ import { useEffect, useState } from 'react'
 import { Grid, HStack, IconButton, Skeleton, Text, Alert, AlertIcon, Stack, StackDivider } from '@chakra-ui/react'
 import { BiTrash, BiDotsVerticalRounded, BiInfoCircle } from 'react-icons/bi'
 
-import { deleteItem, getAllItems, updateItem } from '../services'
-import { Item } from '../types'
-import { EditItemForm } from '.'
+import { deleteTransaction, getAllTransactions, updateTransaction } from '../services'
+import { Transaction, TR_IT } from '../types'
+import { EditTransactionForm } from '.'
 
 const TableHead = () => {
   return (
-    <Grid templateColumns="2fr 1fr 1fr 1fr 8rem" alignItems="center" color="gray.500">
+    <Grid templateColumns="1fr 1fr 2fr 8rem" alignItems="center" color="gray.500">
       <Text fontWeight="500" mr="4" flex="1">
-        Title
+        Datetime
       </Text>
-      <Text textAlign="center" fontWeight="500" mr="4" flex="1">
-        Available
+      <Text fontWeight="500" mr="4" flex="1">
+        Client
       </Text>
-      <Text textAlign="center" fontWeight="500" mr="4" flex="1">
-        Borrowed
-      </Text>
-      <Text textAlign="center" fontWeight="500" mr="4" flex="1">
-        All
+      <Text fontWeight="500" mr="4" flex="1">
+        Items
       </Text>
       <div />
     </Grid>
@@ -47,26 +44,46 @@ const Empty = () => {
 }
 
 interface ItemProps {
-  item: Item
-  onClickEdit: (client: Item) => void
-  onClickDelete: (itemId: number) => void
+  item: Transaction
+  onClickEdit: (transaction: Transaction) => void
+  onClickDelete: (transactionId: number) => void
 }
 
-const ItemItem = (props: ItemProps) => {
+interface Props {
+  item: TR_IT
+}
+
+const ItemItem = (props: Props) => {
+  const { count } = props.item
+  const { title } = props.item.item
+  return (
+    <span>
+      <Text as="span" fontWeight="500" mr="4" flex="1">
+        {title}:{' '}
+        <span style={{ color: count > 0 ? 'green' : 'red' }}>
+          {count > 0 ? '+' : ''}
+          {count}
+        </span>
+        ,
+      </Text>
+    </span>
+  )
+}
+
+const TransactionItem = (props: ItemProps) => {
   const { onClickEdit, item, onClickDelete } = props
   return (
-    <Grid templateColumns="2fr 1fr 1fr 1fr 8rem" alignItems="center">
+    <Grid templateColumns="1fr 1fr 2fr 8rem" alignItems="center">
+      <Text mr="4" flex="1">
+        {new Date(item.timestamp).toLocaleString()}
+      </Text>
       <Text fontWeight="500" mr="4" flex="1">
-        {item.title}
+        {item.client?.full_name || '-----'}
       </Text>
-      <Text textAlign="center" mr="4" flex="1">
-        {item.count_available || 0}
-      </Text>
-      <Text textAlign="center" mr="4" flex="1">
-        {(item.count_all || 0) - (item.count_available || 0)}
-      </Text>
-      <Text textAlign="center" fontWeight="500" mr="4" flex="1">
-        {item.count_all || 0}
+      <Text mr="4" flex="1">
+        {item.items.map((item) => (
+          <ItemItem item={item} key={item.item.id} />
+        ))}
       </Text>
       <HStack spacing="0" justifyContent="flex-end">
         <IconButton variant="ghost" aria-label="" icon={<BiTrash />} onClick={() => onClickDelete(item.id)} />
@@ -77,8 +94,8 @@ const ItemItem = (props: ItemProps) => {
 }
 
 export const TransactionList = () => {
-  const [items, setItems] = useState<Item[] | undefined>()
-  const [edit, setEdit] = useState<Item | undefined>(undefined)
+  const [items, setItems] = useState<Transaction[] | undefined>()
+  const [edit, setEdit] = useState<Transaction | undefined>(undefined)
 
   useEffect(() => {
     updateList()
@@ -86,17 +103,17 @@ export const TransactionList = () => {
 
   const updateList = () => {
     setItems(undefined)
-    getAllItems().then((res) => setItems(res))
+    getAllTransactions().then((res) => setItems(res))
   }
 
-  const onClientSave = async (item: Item) => {
-    await updateItem(item)
+  const onSave = async (item: Transaction) => {
+    await updateTransaction(item)
     setEdit(undefined)
     updateList()
   }
 
-  const onClientDelete = async (itemId: number) => {
-    await deleteItem(itemId)
+  const onDelete = async (transactionId: number) => {
+    await deleteTransaction(transactionId)
     updateList()
   }
 
@@ -109,10 +126,10 @@ export const TransactionList = () => {
         {items &&
           items.length !== 0 &&
           items.map((item) => (
-            <ItemItem onClickEdit={(item) => setEdit(item)} key={item.id} item={item} onClickDelete={onClientDelete} />
+            <TransactionItem onClickEdit={(item) => setEdit(item)} key={item.id} item={item} onClickDelete={onDelete} />
           ))}
       </Stack>
-      <EditItemForm item={edit} onClose={() => setEdit(undefined)} onSave={onClientSave} />
+      <EditTransactionForm transaction={edit} onClose={() => setEdit(undefined)} onSave={onSave} />
     </>
   )
 }
