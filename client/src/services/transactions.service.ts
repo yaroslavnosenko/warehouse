@@ -8,19 +8,20 @@ export const getAllTransactions = async (): Promise<Transaction[]> => {
 
 export const createTransaction = async (transaction: Transaction): Promise<void> => {
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  // const ids: number[] = items.map((item) => item.id)
-  // item.id = Math.max(...ids) + 1
-  // items.push(item)
+  const ids: number[] = transactions.map((item) => item.id)
+  transaction.id = Math.max(...ids) + 1
+  transaction.timestamp = Date.now()
+  transactions.push(transaction)
 }
 
 export const updateTransaction = async (transaction: Transaction): Promise<void> => {
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  // const itemIdx: number = items.findIndex((_item) => _item.id === item.id)
-  // items[itemIdx] = item
+  const itemIdx: number = transactions.findIndex((_item) => _item.id === transaction.id)
+  transactions[itemIdx] = transaction
 }
 
 export const deleteTransaction = async (transactionId: number): Promise<void> => {
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  // const itemIdx: number = items.findIndex((_item) => _item.id === itemId)
-  // items.splice(itemIdx, 1)
+  const itemIdx: number = transactions.findIndex((_item) => _item.id === transactionId)
+  transactions.splice(itemIdx, 1)
 }
