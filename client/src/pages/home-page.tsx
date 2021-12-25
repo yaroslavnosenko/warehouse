@@ -1,12 +1,12 @@
-import { Box, Heading } from '@chakra-ui/layout'
-import { Container } from '../components'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const HomePage = () => {
-  return (
-    <Box py="12">
-      <Container>
-        <Heading>Welcome</Heading>
-      </Container>
-    </Box>
-  )
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    navigate('/items')
+  }, [navigate])
+
+  return null
 }
