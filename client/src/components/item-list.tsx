@@ -89,13 +89,13 @@ export const ItemList = () => {
     getAllItems().then((res) => setItems(res))
   }
 
-  const onClientSave = async (item: Item) => {
+  const onSave = async (item: Item) => {
     await updateItem(item)
     setEdit(undefined)
     updateList()
   }
 
-  const onClientDelete = async (itemId: number) => {
+  const onDelete = async (itemId: number) => {
     await deleteItem(itemId)
     updateList()
   }
@@ -109,10 +109,10 @@ export const ItemList = () => {
         {items &&
           items.length !== 0 &&
           items.map((item) => (
-            <ItemItem onClickEdit={(item) => setEdit(item)} key={item.id} item={item} onClickDelete={onClientDelete} />
+            <ItemItem onClickEdit={(item) => setEdit(item)} key={item.id} item={item} onClickDelete={onDelete} />
           ))}
       </Stack>
-      <EditItemForm item={edit} onClose={() => setEdit(undefined)} onSave={onClientSave} />
+      <EditItemForm item={edit} onClose={() => setEdit(undefined)} onSave={onSave} />
     </>
   )
 }
