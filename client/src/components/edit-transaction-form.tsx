@@ -99,7 +99,7 @@ export const EditTransactionForm = (props: Props) => {
                 <NumberInput
                   size="sm"
                   defaultValue={form.items.find((itx) => itx.item.id === item.id)?.count || 0}
-                  min={-(item?.count_available || 0)}
+                  min={-(item?.available || 0)}
                   onChange={(_, num) => onItemChange(num, item)}
                 >
                   <NumberInputField />

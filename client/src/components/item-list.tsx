@@ -8,18 +8,12 @@ import { EditItemForm } from '.'
 
 const TableHead = () => {
   return (
-    <Grid templateColumns="2fr 1fr 1fr 1fr 8rem" alignItems="center" color="gray.500">
+    <Grid templateColumns="2fr 1fr 8rem" alignItems="center" color="gray.500">
       <Text fontWeight="500" mr="4" flex="1">
         Title
       </Text>
       <Text textAlign="center" fontWeight="500" mr="4" flex="1">
         Available
-      </Text>
-      <Text textAlign="center" fontWeight="500" mr="4" flex="1">
-        Borrowed
-      </Text>
-      <Text textAlign="center" fontWeight="500" mr="4" flex="1">
-        All
       </Text>
       <div />
     </Grid>
@@ -55,18 +49,12 @@ interface ItemProps {
 const ItemItem = (props: ItemProps) => {
   const { onClickEdit, item, onClickDelete } = props
   return (
-    <Grid templateColumns="2fr 1fr 1fr 1fr 8rem" alignItems="center">
+    <Grid templateColumns="2fr 1fr 8rem" alignItems="center">
       <Text fontWeight="500" mr="4" flex="1">
         {item.title}
       </Text>
       <Text textAlign="center" mr="4" flex="1">
-        {item.count_available || 0}
-      </Text>
-      <Text textAlign="center" mr="4" flex="1">
-        {(item.count_all || 0) - (item.count_available || 0)}
-      </Text>
-      <Text textAlign="center" fontWeight="500" mr="4" flex="1">
-        {item.count_all || 0}
+        {item.available || 0}
       </Text>
       <HStack spacing="0" justifyContent="flex-end">
         <IconButton variant="ghost" aria-label="" icon={<BiTrash />} onClick={() => onClickDelete(item.id)} />
