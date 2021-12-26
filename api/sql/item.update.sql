@@ -1,0 +1,1 @@
+UPDATE item SET title = %s WHERE id = %s

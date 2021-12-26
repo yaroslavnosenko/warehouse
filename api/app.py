@@ -70,7 +70,7 @@ def create_item():
     data = request.get_json()
     db = db_conn()
     cursor = db.cursor()
-    sql = "INSERT INTO item (title) VALUES (%s)"
+    sql = open("./sql/item.insert.sql").read()
     val = (data['title'])
     cursor.execute(sql, (val,))
     db.commit()
@@ -81,11 +81,8 @@ def create_item():
 def read_items():
     db = db_conn()
     cursor = db.cursor()
-    cursor.execute("""
-        SELECT id, title, 
-        (SELECT SUM(transaction_item.count) FROM transaction_item WHERE transaction_item.item_id = item.id) AS available
-        FROM item
-    """)
+    sql = open("./sql/item.read.sql").read()
+    cursor.execute(sql)
     db_result = cursor.fetchall()
     cursor.close()
     db.close()
@@ -101,7 +98,7 @@ def update_item(item_id):
     data = request.get_json()
     db = db_conn()
     cursor = db.cursor()
-    sql = "UPDATE item SET title = %s WHERE id = %s"
+    sql = open("./sql/item.update.sql").read()
     val = (data['title'], item_id)
     cursor.execute(sql, val)
     db.commit()
@@ -112,7 +109,7 @@ def update_item(item_id):
 def delete_item(item_id):
     db = db_conn()
     cursor = db.cursor()
-    sql = "DELETE FROM item WHERE id = %s"
+    sql = open("./sql/item.delete.sql").read()
     val = (item_id)
     cursor.execute(sql, (val,))
     db.commit()
