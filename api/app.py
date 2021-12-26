@@ -83,13 +83,17 @@ def read_items():
 
     # TODO: COUNT AVAIDABLE
 
-    cursor.execute("SELECT id, title from item")
+    cursor.execute("""
+        SELECT id, title, 
+        (SELECT SUM(transaction_item.count) FROM transaction_item WHERE transaction_item.item_id = item.id) AS available
+        FROM item
+    """)
     db_result = cursor.fetchall()
     cursor.close()
     db.close()
     payload = []
     for row in db_result:
-        content = {'id': row[0], 'title': row[1]}
+        content = {'id': row[0], 'title': row[1], 'available': row[2]}
         payload.append(content)
     return jsonify(payload)
 
