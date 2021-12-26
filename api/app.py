@@ -114,3 +114,25 @@ def delete_item(item_id):
     cursor.execute(sql, (val,))
     db.commit()
     return jsonify({'status': 'OK'}), 204
+
+
+# TRANSACTIONS
+
+
+@app.route('/transactions', methods=['POST'])
+def create_transaction():
+    data = request.get_json()
+    db = db_conn()
+    cursor = db.cursor()
+
+    transactions_sql = "INSERT INTO transaction (client_id) VALUES (%s)"
+    val = (data['client_id'])
+    cursor.execute(transactions_sql, (val,))
+
+    items_sql = "INSERT INTO transaction_item (transaction_id, item_id, count) VALUES (%s, %s, %s)"
+    val = list(
+        map(lambda item: (cursor.lastrowid, item['id'], item['count']), data['items']))
+    cursor.executemany(items_sql, val)
+
+    db.commit()
+    return jsonify({'status': 'OK'}), 201
