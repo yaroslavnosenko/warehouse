@@ -17,7 +17,7 @@ def create_client():
     data = request.get_json()
     db = db_conn()
     cursor = db.cursor()
-    sql = "INSERT INTO client (full_name) VALUES (%s)"
+    sql = open("./sql/client.insert.sql").read()
     val = (data['full_name'])
     cursor.execute(sql, (val,))
     db.commit()
@@ -28,7 +28,8 @@ def create_client():
 def read_clients():
     db = db_conn()
     cursor = db.cursor()
-    cursor.execute("SELECT id, full_name from client")
+    sql = open("./sql/client.read.sql").read()
+    cursor.execute(sql)
     db_result = cursor.fetchall()
     cursor.close()
     db.close()
@@ -44,7 +45,7 @@ def update_client(client_id):
     data = request.get_json()
     db = db_conn()
     cursor = db.cursor()
-    sql = "UPDATE client SET full_name = %s WHERE id = %s"
+    sql = open("./sql/client.update.sql").read()
     val = (data['full_name'], client_id)
     cursor.execute(sql, val)
     db.commit()
@@ -55,7 +56,7 @@ def update_client(client_id):
 def delete_client(client_id):
     db = db_conn()
     cursor = db.cursor()
-    sql = "DELETE FROM client WHERE id = %s"
+    sql = open("./sql/client.delete.sql").read()
     val = (client_id)
     cursor.execute(sql, (val,))
     db.commit()
@@ -80,9 +81,6 @@ def create_item():
 def read_items():
     db = db_conn()
     cursor = db.cursor()
-
-    # TODO: COUNT AVAIDABLE
-
     cursor.execute("""
         SELECT id, title, 
         (SELECT SUM(transaction_item.count) FROM transaction_item WHERE transaction_item.item_id = item.id) AS available

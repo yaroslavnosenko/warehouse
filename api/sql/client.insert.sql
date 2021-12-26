@@ -1,0 +1,1 @@
+INSERT INTO client (full_name) VALUES (%s)
