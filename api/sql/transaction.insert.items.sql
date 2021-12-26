@@ -1,0 +1,1 @@
+INSERT INTO transaction_item (transaction_id, item_id, count) VALUES (%s, %s, %s)

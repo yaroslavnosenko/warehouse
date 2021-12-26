@@ -1,0 +1,1 @@
+INSERT INTO transaction (client_id) VALUES (%s)

@@ -125,11 +125,11 @@ def create_transaction():
     db = db_conn()
     cursor = db.cursor()
 
-    transactions_sql = "INSERT INTO transaction (client_id) VALUES (%s)"
+    transactions_sql = open("./sql/transaction.insert.tr.sql").read()
     val = (data['client_id'])
     cursor.execute(transactions_sql, (val,))
 
-    items_sql = "INSERT INTO transaction_item (transaction_id, item_id, count) VALUES (%s, %s, %s)"
+    items_sql = open("./sql/transaction.insert.items.sql").read()
     val = list(
         map(lambda item: (cursor.lastrowid, item['id'], item['count']), data['items']))
     cursor.executemany(items_sql, val)
@@ -142,14 +142,8 @@ def create_transaction():
 def read_transactions():
     db = db_conn()
     cursor = db.cursor()
-
-    cursor.execute("""
-        SELECT `transaction`.id, `transaction`.timestamp, `transaction`.client_id, transaction_item.item_id, transaction_item.count, item.title, client.full_name
-        FROM `transaction` 
-        LEFT JOIN transaction_item ON transaction_item.transaction_id = transaction.id
-        LEFT JOIN client ON client.id = transaction.client_id
-        LEFT JOIN item ON item.id = transaction_item.item_id
-    """)
+    sql = open("./sql/transaction.read.sql").read()
+    cursor.execute(sql)
     db_result = cursor.fetchall()
     cursor.close()
     db.close()
