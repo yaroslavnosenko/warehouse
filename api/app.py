@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector as MYSQL
+import numpy as np
 app = Flask(__name__)
 CORS(app)
 
@@ -136,3 +137,36 @@ def create_transaction():
 
     db.commit()
     return jsonify({'status': 'OK'}), 201
+
+
+@app.route('/transactions', methods=['GET'])
+def read_transactions():
+    db = db_conn()
+    cursor = db.cursor()
+
+    cursor.execute("""
+        SELECT `transaction`.id, `transaction`.timestamp, `transaction`.client_id, transaction_item.item_id, transaction_item.count, item.title, client.full_name
+        FROM `transaction` 
+        LEFT JOIN transaction_item ON transaction_item.transaction_id = transaction.id
+        LEFT JOIN client ON client.id = transaction.client_id
+        LEFT JOIN item ON item.id = transaction_item.item_id
+    """)
+    db_result = cursor.fetchall()
+    cursor.close()
+    db.close()
+
+    unique_ids = np.unique(list(map(lambda row: row[0], db_result)))
+    payload = []
+    for _id in unique_ids:
+        tr = list(filter(lambda row: row[0] == _id, list(db_result)))
+        client = None if tr[0][2] == None else {
+            'id': tr[0][2], 'full_name': tr[0][6]}
+        items = []
+        for tri in tr:
+            items.append(
+                {'item': {'id': tri[3], 'title': tri[5]}, 'count': tri[4]})
+        row = {
+            'id': int(_id), 'timestamp': tr[0][1], 'client': client, 'items': items}
+        payload.append(row)
+
+    return jsonify(payload), 200
