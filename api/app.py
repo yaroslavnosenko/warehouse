@@ -16,19 +16,15 @@ def create_client():
     data = request.get_json()
     db = db_conn()
     cursor = db.cursor()
-    cursor.execute("SELECT id, full_name from client")
-    db_result = cursor.fetchall()
-    cursor.close()
-    db.close()
-    payload = []
-    for row in db_result:
-        content = {'id': row[0], 'full_name': row[1]}
-        payload.append(content)
-    return jsonify(payload)
+    sql = "INSERT INTO client (full_name) VALUES (%s)"
+    val = (data['full_name'])
+    cursor.execute(sql, (val,))
+    db.commit()
+    return jsonify({'status': 'OK'}), 201
 
 
 @app.route('/clients', methods=['GET'])
-def get_all_clients():
+def read_clients():
     db = db_conn()
     cursor = db.cursor()
     cursor.execute("SELECT id, full_name from client")
@@ -42,15 +38,24 @@ def get_all_clients():
     return jsonify(payload)
 
 
-@app.route('/clients/<client_id>', methods=['GET'])
-def get_client(client_id):
+@app.route('/clients/<client_id>', methods=['PATCH'])
+def update_client(client_id):
+    data = request.get_json()
     db = db_conn()
     cursor = db.cursor()
-    cursor.execute(
-        "SELECT id, full_name from client WHERE id={}".format(client_id))
-    db_result = cursor.fetchall()
-    cursor.close()
-    db.close()
-    row = db_result[0]
-    payload = {'id': row[0], 'full_name': row[1]}
-    return jsonify(payload)
+    sql = "UPDATE client SET full_name = %s WHERE id = %s"
+    val = (data['full_name'], client_id)
+    cursor.execute(sql, val)
+    db.commit()
+    return jsonify({'status': 'OK'}), 200
+
+
+@app.route('/clients/<client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    db = db_conn()
+    cursor = db.cursor()
+    sql = "DELETE FROM client WHERE id = %s"
+    val = (client_id)
+    cursor.execute(sql, (val,))
+    db.commit()
+    return jsonify({'status': 'OK'}), 204
