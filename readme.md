@@ -2,6 +2,8 @@
 
 This repo contains codebase for group project for APIS in 2021/22
 
+[Github](https://github.com/yaroslavnosenko/warehouse)
+
 ## Client
 
 React app built with typescript and Chakra-UI framework. It is deployed on [https://garden-warehouse.herokuapp.com/](https://garden-warehouse.herokuapp.com/).
