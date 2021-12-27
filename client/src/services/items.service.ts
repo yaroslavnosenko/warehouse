@@ -1,26 +1,32 @@
 import { Item } from '../types'
-import { items } from '../mock'
+
+const SERVER: string = 'https://garden-warehouse-api.herokuapp.com'
 
 export const getAllItems = async (): Promise<Item[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  return items
+  const res = await fetch(`${SERVER}/items`)
+  const data = await res.json()
+  return data as Item[]
 }
 
 export const createItem = async (item: Item): Promise<void> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  const ids: number[] = items.map((item) => item.id)
-  item.id = Math.max(...ids) + 1
-  items.push(item)
+  const data: any = { title: item.title }
+  await fetch(`${SERVER}/items`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
 }
 
 export const updateItem = async (item: Item): Promise<void> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  const itemIdx: number = items.findIndex((_item) => _item.id === item.id)
-  items[itemIdx] = item
+  const { id, title } = item
+  const data: any = { title }
+  await fetch(`${SERVER}/items/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
 }
 
 export const deleteItem = async (itemId: number): Promise<void> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  const itemIdx: number = items.findIndex((_item) => _item.id === itemId)
-  items.splice(itemIdx, 1)
+  await fetch(`${SERVER}/items/${itemId}`, { method: 'DELETE' })
 }
