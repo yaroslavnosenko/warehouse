@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Grid, HStack, IconButton, Skeleton, Text, Alert, AlertIcon, Stack, StackDivider } from '@chakra-ui/react'
 import { BiTrash, BiDotsVerticalRounded, BiInfoCircle } from 'react-icons/bi'
 
-import { deleteTransaction, getAllTransactions, updateTransaction } from '../services'
+import { getAllTransactions } from '../services'
 import { Transaction, TR_IT } from '../types'
 import { EditTransactionForm } from '.'
 
@@ -86,8 +86,8 @@ const TransactionItem = (props: ItemProps) => {
         ))}
       </Text>
       <HStack spacing="0" justifyContent="flex-end">
-        <IconButton variant="ghost" aria-label="" icon={<BiTrash />} onClick={() => onClickDelete(item.id)} />
-        <IconButton onClick={() => onClickEdit(item)} variant="ghost" aria-label="" icon={<BiDotsVerticalRounded />} />
+        {/* <IconButton variant="ghost" aria-label="" icon={<BiTrash />} onClick={() => onClickDelete(item.id)} /> */}
+        {/* <IconButton onClick={() => onClickEdit(item)} variant="ghost" aria-label="" icon={<BiDotsVerticalRounded />} /> */}
       </HStack>
     </Grid>
   )
@@ -107,13 +107,11 @@ export const TransactionList = () => {
   }
 
   const onSave = async (item: Transaction) => {
-    await updateTransaction(item)
     setEdit(undefined)
     updateList()
   }
 
   const onDelete = async (transactionId: number) => {
-    await deleteTransaction(transactionId)
     updateList()
   }
 

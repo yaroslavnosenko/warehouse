@@ -14,14 +14,14 @@ export const createTransaction = async (transaction: Transaction): Promise<void>
   transactions.push(transaction)
 }
 
-export const updateTransaction = async (transaction: Transaction): Promise<void> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  const itemIdx: number = transactions.findIndex((_item) => _item.id === transaction.id)
-  transactions[itemIdx] = transaction
-}
+// export const updateTransaction = async (transaction: Transaction): Promise<void> => {
+//   await new Promise((resolve) => setTimeout(resolve, 1000))
+//   const itemIdx: number = transactions.findIndex((_item) => _item.id === transaction.id)
+//   transactions[itemIdx] = transaction
+// }
 
-export const deleteTransaction = async (transactionId: number): Promise<void> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  const itemIdx: number = transactions.findIndex((_item) => _item.id === transactionId)
-  transactions.splice(itemIdx, 1)
-}
+// export const deleteTransaction = async (transactionId: number): Promise<void> => {
+//   await new Promise((resolve) => setTimeout(resolve, 1000))
+//   const itemIdx: number = transactions.findIndex((_item) => _item.id === transactionId)
+//   transactions.splice(itemIdx, 1)
+// }
