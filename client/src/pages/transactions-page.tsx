@@ -27,7 +27,8 @@ export const TransactionsPage = () => {
         </HStack>
 
         <Box mt="12">
-          <TransactionList />
+          {create && <TransactionList />}
+          {!create && <TransactionList />}
         </Box>
       </Container>
       <EditTransactionForm transaction={create} onClose={() => setCreate(undefined)} onSave={onTransactionSave} />

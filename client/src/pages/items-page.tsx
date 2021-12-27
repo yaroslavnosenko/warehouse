@@ -27,7 +27,8 @@ export const ItemsPage = () => {
         </HStack>
 
         <Box mt="12">
-          <ItemList />
+          {create && <ItemList />}
+          {!create && <ItemList />}
         </Box>
       </Container>
       <EditItemForm item={create} onClose={() => setCreate(undefined)} onSave={onItemSave} />

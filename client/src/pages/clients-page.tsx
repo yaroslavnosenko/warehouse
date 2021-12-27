@@ -27,7 +27,8 @@ export const ClientsPage = () => {
         </HStack>
 
         <Box mt="12">
-          <ClientList />
+          {create && <ClientList />}
+          {!create && <ClientList />}
         </Box>
       </Container>
       <EditClientForm client={create} onClose={() => setCreate(undefined)} onSave={onClientSave} />
