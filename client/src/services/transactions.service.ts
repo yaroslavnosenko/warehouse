@@ -1,17 +1,23 @@
 import { Transaction } from '../types'
-import { transactions } from '../mock'
+
+const SERVER: string = 'https://garden-warehouse-api.herokuapp.com'
 
 export const getAllTransactions = async (): Promise<Transaction[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  return transactions
+  const res = await fetch(`${SERVER}/transactions`)
+  const data = await res.json()
+  return data as Transaction[]
 }
 
 export const createTransaction = async (transaction: Transaction): Promise<void> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  const ids: number[] = transactions.map((item) => item.id)
-  transaction.id = Math.max(...ids) + 1
-  transaction.timestamp = Date.now()
-  transactions.push(transaction)
+  const data: any = {
+    client_id: transaction.client?.id || null,
+    items: transaction.items.map((item) => ({ id: item.item.id, count: item.count })),
+  }
+  await fetch(`${SERVER}/transactions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
 }
 
 // export const updateTransaction = async (transaction: Transaction): Promise<void> => {
