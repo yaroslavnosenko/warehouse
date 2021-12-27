@@ -4,8 +4,8 @@ This repo contains codebase for group project for APIS in 2021/22
 
 ## Client
 
-React app built with typescript and Chakra-UI framework. It is deployed on [heroku](https://garden-warehouse.herokuapp.com/).
+React app built with typescript and Chakra-UI framework. It is deployed on [https://garden-warehouse.herokuapp.com/](https://garden-warehouse.herokuapp.com/).
 
 ## Back
 
-TODO
+React app built with pyhton, MySQL and Flask framework. It is deployed on [https://garden-warehouse-api.herokuapp.com/](https://garden-warehouse-api.herokuapp.com/).
