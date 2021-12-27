@@ -11,3 +11,7 @@ React app built with typescript and Chakra-UI framework. It is deployed on [http
 ## Back
 
 React app built with pyhton, MySQL and Flask framework. It is deployed on [https://garden-warehouse-api.herokuapp.com/](https://garden-warehouse-api.herokuapp.com/).
+
+## Authors
+
+Yaroslav Nosenko, Oleksii Krynytskyi, Alina Mieshchanova
